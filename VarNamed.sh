@@ -5,41 +5,41 @@ read -p "Host Name: " name
 read -p "Ip: " ip
 read -p "How many times have you run this: " serial
 
-cp -rp /etc/bind /root/bind_backup.d
+cp -rp /var/named /root/bind_backup.d
 cp -rp /etc/named.conf /root/named.conf.bak
 
-if [ ! -d /etc/bind/zones ]; then
-        mkdir /etc/bind/zones
+if [ ! -d /var/named/zones ]; then
+        mkdir /var/named/zones
 fi
 
-cp /etc/bind/db.empty /etc/bind/zones/forward.ncaecybergames.org
-cp /etc/bind/db.empty /etc/bind/zones/reverse.ncaecybergames.org
-cp /etc/bind/db.empty /etc/bind/zones/forward.team.net
-cp /etc/bind/db.empty /etc/bind/zones/reverse.team.net
+cp /var/named/db.empty /var/named/zones/forward.ncaecybergames.org
+cp /var/named/db.empty /var/named/zones/reverse.ncaecybergames.org
+cp /var/named/db.empty /var/named/zones/forward.team.net
+cp /var/named/db.empty /var/named/zones/reverse.team.net
 
 cat << done > /etc/named.conf
 zone "team$team.ncaecybergames.org" IN {
         type master;
-        file "/etc/bind/zones/forward.ncaecybergames.org";
+        file "/var/named/zones/forward.ncaecybergames.org";
 };
 
 zone "18.172.in-addr.arpa" IN {
         type master;
-        file "/etc/bind/zones/reverse.ncaecybergames.org";
+        file "/var/named/zones/reverse.ncaecybergames.org";
 };
 
 zone "team$team.net" IN {
         type master;
-        file "/etc/bind/zones/forward.team.net";
+        file "/var/named/zones/forward.team.net";
 };
 
 zone "$team.168.192.in-addr.arpa" IN {
         type master;
-        file "/etc/bind/zones/reverse.team.net";
+        file "/var/named/zones/reverse.team.net";
 };
 done
 
-cat << done > /etc/bind/zones/forward.ncaecybergames.org
+cat << done > /var/named/zones/forward.ncaecybergames.org
 \$TTL    86400
 @       IN      SOA     team$team.ncaecybergames.org root (
                               $serial         ; Serial
@@ -56,7 +56,7 @@ files   IN      A       172.18.14.$team
 shell   IN      A       172.18.14.$team
 done
 
-cat << done > /etc/bind/zones/reverse.ncaecybergames.org
+cat << done > /var/named/zones/reverse.ncaecybergames.org
 \$TTL    86400
 @       IN      SOA     team$team.ncaecybergames.org. root.team$team.ncaecybergames.org. (
                               $serial         ; Serial
@@ -72,7 +72,7 @@ $team.14        IN      PTR     files.team$team.ncaecybergames.org.
 $team.14        IN      PTR     shell.team$team.ncaecybergames.org.
 done
 
-cat << done > /etc/bind/zones/forward.team.net
+cat << done > /var/named/zones/forward.team.net
 \$TTL    86400
 @       IN      SOA     team$team.net root (
                               $serial         ; Serial
@@ -88,7 +88,7 @@ www     IN      A       192.168.$team.5
 db1     IN      A       192.168.$team.7
 done
 
-cat << done > /etc/bind/zones/reverse.team.net
+cat << done > /var/named/zones/reverse.team.net
 \$TTL    86400
 @       IN      SOA     team$team.net. root.team$team.net. (
                               $serial         ; Serial
@@ -103,6 +103,6 @@ cat << done > /etc/bind/zones/reverse.team.net
 5       IN      PTR     www.team$team.net.
 done
 
-chown -R named:named /etc/bind
+chown -R named:named /var/named
 systemctl restart named
 systemctl status named
