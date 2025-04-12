@@ -255,7 +255,7 @@ done
 
 function main_menu() {
     
-    PRIMARY_INTERFACE=$(lshw -class network | grep "logical name:" | sed 's/logical name://')
+    PRIMARY_INTERFACE=$(ip -br a | awk '{print $1}' | grep -v lo)
         if [[ -z "$PRIMARY_INTERFACE" ]]; then 
             echo "Error: COULD NOT FIND PRIMARY INTERFACE" 
             echo "CONFIGURE INTERFACE MANUALLY" 
