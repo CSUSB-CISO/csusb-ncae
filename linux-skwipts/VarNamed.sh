@@ -12,10 +12,10 @@ if [ ! -d /var/named/zones ]; then
         mkdir /var/named/zones
 fi
 
-cp /var/named/db.empty /var/named/zones/forward.ncaecybergames.org
-cp /var/named/db.empty /var/named/zones/reverse.ncaecybergames.org
-cp /var/named/db.empty /var/named/zones/forward.team.net
-cp /var/named/db.empty /var/named/zones/reverse.team.net
+cp /var/named/named.empty /var/named/zones/forward.ncaecybergames.org
+cp /var/named/named.empty /var/named/zones/reverse.ncaecybergames.org
+cp /var/named/named.empty /var/named/zones/forward.team.net
+cp /var/named/named.empty /var/named/zones/reverse.team.net
 
 cat << done > /etc/named.conf
 zone "team$team.ncaecybergames.org" IN {
