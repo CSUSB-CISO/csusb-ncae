@@ -19,7 +19,7 @@ cp /var/named/named.empty /var/named/zones/reverse.team.net
 
 cat << done > /etc/named.conf
 options {
-        direcotry "/var/named/zones";
+        directory "/var/named/zones";
 };
 
 zone "team$team.ncaecybergames.org" IN {
